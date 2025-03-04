@@ -17,10 +17,10 @@ const connectToDatabase = async (tenantId) => {
         return connections[tenantId].connection; // Reutiliza la conexión
     }
 
-    const dbURI = `mongodb://localhost:27017/${tenantId}`;
+    const dbURI = `mongodb+srv://joseftsmrtz:xGju2deDpsoNDEh1@bethergold.fen9s.mongodb.net/${tenantId}`;
     console.log(`🔗 Creando nueva conexión a ${tenantId}`);
 
-    const connection =  await mongoose.connect(dbURI);
+    const connection = await mongoose.connect(dbURI);
     console.log(`🔗 Conexión a ${connection} creada`);
 
     // Guardamos la conexión en el objeto

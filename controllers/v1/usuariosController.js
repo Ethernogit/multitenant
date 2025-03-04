@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const Users = require('../../models/usuario');
 
 const crearUsuario = async (req, res) => {
     console.log('Entrando al controlador crearUsuario');
@@ -8,13 +7,7 @@ const crearUsuario = async (req, res) => {
         console.log('Creando usuario...');
         const { name, email, password } = req.body;
 
-       
-
-      
-        // const usuarioExistente = await Users.findOne({ email });
-        // if (usuarioExistente) {
-        //     return res.status(400).json({ error: 'El usuario ya existe' });
-        // }
+        const Users = require('../../models/usuario')(req.dbConnection);
 
         // Hash de la contraseña antes de guardar
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,7 +18,6 @@ const crearUsuario = async (req, res) => {
 
         await nuevoUsuario.save();
 
-        
         res.status(201).json(nuevoUsuario);
     } catch (error) {
         console.error('Error al crear usuario:', error);
@@ -33,11 +25,10 @@ const crearUsuario = async (req, res) => {
     }
 };
 
-
 const obtenerUsuarios = async (req, res) => {
     try {
-        const Usuario = require('../../models/usuario')(req.db);
-        const usuarios = await Usuario.find();
+        const Users = require('../../models/usuario')(req.dbConnection);
+        const usuarios = await Users.find();
         res.status(200).json(usuarios);
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
