@@ -6,10 +6,7 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         console.log("login");
 
-        const tenantId = req.header('x-tenant-id');
-        if (!tenantId) {
-            return res.status(400).json({ error: 'Falta el ID del tenant' });
-        }
+        const tenantId = req.tenantId;
         const Users = require('../../models/usuario')(req.dbConnection);
 
         // Buscar el usuario por email
@@ -33,7 +30,7 @@ const login = async (req, res) => {
                 tenantId: tenantId
             },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' });
+            { expiresIn: '6h' });
 
         res.status(200).json({ token });
     } catch (error) {
