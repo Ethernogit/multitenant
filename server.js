@@ -2,12 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const v1Routes = require('./routes/v1');
 const tenantMiddleware = require('./middleware/tenantMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
-
+app.use(cors());
 const connections = {};
 
 // Middleware para manejar el tenant

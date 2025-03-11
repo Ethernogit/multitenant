@@ -6,7 +6,9 @@ const connections = {};
 const tenantMiddleware = async (req, res, next) => {
     let tenantId = req.header('x-tenant-id');
     if (!tenantId) {
+        console.log(req, "req");
         const { email } = req.body;
+        console.log('email', email);
         if (email) {
             tenantId = email.split('@')[1].split('.')[0];
         } else {
