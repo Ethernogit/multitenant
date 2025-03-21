@@ -14,6 +14,7 @@ const crearCategoria = async (req, res) => {
         res.status(500).json({ error: 'Error al guardar la categoría' });
     }
 };
+
 const obtenerCategorias = async (req, res) => {
     try {
         const { Categoria } = require('../../models/categorias')(req.dbConnection);
@@ -25,6 +26,7 @@ const obtenerCategorias = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener las categorías' });
     }
 }
+
 const eliminarCategoria = async (req, res) => {
     try {
         const idcategoria = req.params.idcategoria;
@@ -39,10 +41,6 @@ const eliminarCategoria = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar la categoría' });
     }
 }
-
-
-
-
 
 const crearSubcategoria = async (req, res) => {
     try {
@@ -62,6 +60,7 @@ const crearSubcategoria = async (req, res) => {
         res.status(500).json({ error: 'Error al guardar la subcategoría' });
     }
 };
+
 const obtenerSubcategorias = async (req, res) => {
     try {
         const idcategoria = req.params.idcategoria;
@@ -75,6 +74,7 @@ const obtenerSubcategorias = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener las categorías' });
     }
 }
+
 const eliminarSubcategoria = async (req, res) => {
     try {
         const idsubcategoria = req.params.idsubcategoria;
@@ -89,11 +89,72 @@ const eliminarSubcategoria = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar la subcategoría' });
     }
 }
+
+const crearPermiso = async (req, res) => {
+    try {
+        const { name, slug } = req.body;
+
+        const  PermissionSchema  = require('../../models/permisos')(req.dbConnection);
+
+        const nuevoPermiso = new PermissionSchema({ name, slug });
+
+        await nuevoPermiso.save();
+
+        res.status(201).json(nuevoPermiso);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar el permiso' });
+    }
+};
+
+const obtenerPermisos = async (req, res) => {
+    try {
+        const  PermissionSchema  = require('../../models/permisos')(req.dbConnection);
+
+        const permisos = await PermissionSchema.find();
+
+        res.json(permisos);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los permisos' });
+    }
+}
+
+const crearRole = async (req, res) => {
+    try {
+        const { name, slug, permisos } = req.body;
+
+        const Roles = require('../../models/roles')(req.dbConnection);
+
+        const nuevoRole = new Roles({ name, slug, permisos });
+
+        await nuevoRole.save();
+
+        res.status(201).json(nuevoRole);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar el rol' });
+    }
+};
+
+const obtenerRoles = async (req, res) => {
+    try {
+        const Roles = require('../../models/roles')(req.dbConnection);
+
+        const roles = await Roles.find();
+
+        res.json(roles);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los roles' });
+    }
+}
+
 module.exports = {
     crearCategoria,
     obtenerCategorias,
     eliminarCategoria,
     crearSubcategoria,
     obtenerSubcategorias,
-    eliminarSubcategoria
+    eliminarSubcategoria,
+    crearPermiso,
+    obtenerPermisos,
+    crearRole,
+    obtenerRoles
 };
