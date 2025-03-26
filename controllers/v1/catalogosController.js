@@ -1,4 +1,3 @@
-
 const crearCategoria = async (req, res) => {
     try {
         const { nombre } = req.body;
@@ -146,6 +145,29 @@ const obtenerRoles = async (req, res) => {
     }
 }
 
+const actualizarPermisosRol = async (req, res) => {
+    try {
+        const { roleId } = req.params;
+        const { permissions } = req.body;
+
+        const Roles = require('../../models/roles')(req.dbConnection);
+
+        const rol = await Roles.findByIdAndUpdate(
+            roleId,
+            { $set: { permissions } },
+            { new: true }
+        );
+
+        if (!rol) {
+            return res.status(404).json({ error: 'Rol no encontrado' });
+        }
+
+        res.json(rol);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al actualizar los permisos del rol' });
+    }
+};
+
 module.exports = {
     crearCategoria,
     obtenerCategorias,
@@ -156,5 +178,6 @@ module.exports = {
     crearPermiso,
     obtenerPermisos,
     crearRole,
-    obtenerRoles
+    obtenerRoles,
+    actualizarPermisosRol
 };

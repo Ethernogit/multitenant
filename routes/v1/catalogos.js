@@ -8,8 +8,9 @@ router.delete('/categoria/:idcategoria', catalogosController.eliminarCategoria);
 router.post('/subcategorias', catalogosController.crearSubcategoria);
 router.get('/subcategorias/:idcategoria', catalogosController.obtenerSubcategorias);
 router.delete('/subcategorias/:idsubcategoria', catalogosController.eliminarSubcategoria);
-router.post('/permisos', catalogosController.crearPermiso);
-router.get('/permisos', catalogosController.obtenerPermisos);
+
 router.post('/roles', catalogosController.crearRole);
 router.get('/roles', catalogosController.obtenerRoles);
+router.put('/roles/:roleId/permisos', catalogosController.actualizarPermisosRol);
+
 module.exports = router;
