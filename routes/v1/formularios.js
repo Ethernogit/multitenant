@@ -4,7 +4,7 @@ const formulariosController = require('../../controllers/v1/formulariosControlle
 
 router.post('/create', formulariosController.crearFormulario);
 router.get('/:formulario', formulariosController.obtenerFormulario);
-router.put('/configuraciones/:formulario', formulariosController.actualizarFormulario);
+router.put('/:formulario', formulariosController.actualizarFormulario);
 router.delete('/configuraciones/:formulario', formulariosController.eliminarFormulario);
 
 module.exports = router;

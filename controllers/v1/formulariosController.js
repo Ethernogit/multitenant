@@ -1,4 +1,3 @@
-
 const crearFormulario = async (req, res) => {
     try {
         const { formulario, campos } = req.body;
@@ -34,21 +33,31 @@ const obtenerFormulario = async (req, res) => {
 const actualizarFormulario = async (req, res) => {
     try {
         const { formulario } = req.params;
-        const { campos } = req.body;
+        const { name, type, requerido, opciones } = req.body;
 
-        const configActualizada = await Configuracion.findOneAndUpdate(
-            { formulario },
-            { campos },
+        const configurations = require('../../models/formulariosEmpresa')(req.dbConnection);
+
+        const configActualizada = await configurations.findOneAndUpdate(
+            { 'campos._id': formulario },
+            { 
+                $set: {
+                    'campos.$.name': name,
+                    'campos.$.type': type,
+                    'campos.$.requerido': requerido,
+                    'campos.$.opciones': opciones
+                }
+            },
             { new: true }
         );
 
         if (!configActualizada) {
-            return res.status(404).json({ error: 'Configuración no encontrada' });
+            return res.status(404).json({ error: 'Campo no encontrado' });
         }
 
         res.json(configActualizada);
     } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar la configuración' });
+        console.error('Error al actualizar el campo:', error);
+        res.status(500).json({ error: 'Error al actualizar el campo' });
     }
 };
 const eliminarFormulario = async (req, res) => {

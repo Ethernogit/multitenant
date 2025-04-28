@@ -6,9 +6,10 @@ const connections = {};
 const tenantMiddleware = async (req, res, next) => {
     let tenantId = req.header('x-tenant-id');
     if (!tenantId) {
-        const { email } = req.body;
-        if (email) {
-            tenantId = email.split('@')[1].split('.')[0];
+        const { domain } = req.body;
+        if (domain) {
+            console.log("domain", domain);
+            tenantId = domain
         } else {
             const token = req.header('Authorization')?.replace('Bearer ', '');
             if (token) {
